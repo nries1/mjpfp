@@ -22,6 +22,9 @@ const Calendar = props => {
       {Array.from({ length: daysInMonth[state.currentMonth] }).map(
         (el, index) => (
           <DateTile
+            data-date={`${index + 1}_${state.currentMonth}_${
+              state.currentYear
+            }`}
             key={Math.random() * 100000000}
             day={index + 1}
             eventsThisDay={

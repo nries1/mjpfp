@@ -28,6 +28,7 @@ app.get('/events', (req, res, next) => {
 
 app.post('/create-event', (req, res, next) => {
   const eventData = req.body;
+  console.log('POST REQUEST RECEIVED ', eventData);
   Event.create({
     ...eventData
   })
@@ -48,6 +49,24 @@ app.delete('/:id?', (req, res, next) => {
   })
     .then(result => {
       res.status(200).send({ message: result.data });
+    })
+    .catch(error => {
+      res.status(400).send({ error });
+    });
+});
+
+app.put('/update-event/:id?', (req, res, next) => {
+  const eventId = req.params.id;
+  Event.update(
+    { day: req.body.day, month: req.body.month, year: req.body.year },
+    {
+      where: {
+        id: eventId
+      }
+    }
+  )
+    .then(() => {
+      res.status(200).send({ message: 'Event updated' });
     })
     .catch(error => {
       res.status(400).send({ error });

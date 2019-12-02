@@ -34771,7 +34771,11 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_monthSwitcher_js__WEBPACK_IMPORTED_MODULE_2__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_calendar_js__WEBPACK_IMPORTED_MODULE_4__["default"], null));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        onMouseUp: function onMouseUp() {
+          window.movingElement = false;
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_monthSwitcher_js__WEBPACK_IMPORTED_MODULE_2__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_calendar_js__WEBPACK_IMPORTED_MODULE_4__["default"], null));
     }
   }]);
 
@@ -34820,6 +34824,7 @@ var Calendar = function Calendar(props) {
     length: _dateMap_js__WEBPACK_IMPORTED_MODULE_2__["daysInMonth"][state.currentMonth]
   }).map(function (el, index) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_dateTile_js__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      "data-date": "".concat(index + 1, "_").concat(state.currentMonth, "_").concat(state.currentYear),
       key: Math.random() * 100000000,
       day: index + 1,
       eventsThisDay: eventsThisMonth["".concat(index + 1, "_").concat(state.currentMonth, "_").concat(state.currentYear)]
@@ -34871,14 +34876,13 @@ __webpack_require__.r(__webpack_exports__);
 
 var DateTile = function DateTile(props) {
   var state = _store_js__WEBPACK_IMPORTED_MODULE_1__["default"].getState();
-  console.log('date tile rendering with props ', props);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "card date-card",
-    style: {
-      width: '15rem'
-    }
+    "data-date": "".concat(props.day, "-").concat(state.currentMonth, "-").concat(state.currentYear)
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_eventCreation_js__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    className: "event-creation-form",
     id: "form-".concat(_dateMap_js__WEBPACK_IMPORTED_MODULE_2__["monthMap"][state.currentMonth], "-").concat(props.day, "-").concat(state.currentYear),
+    "data-date": "".concat(props.day, "-").concat(state.currentMonth, "-").concat(state.currentYear),
     date: {
       day: props.day,
       month: state.currentMonth,
@@ -34886,19 +34890,22 @@ var DateTile = function DateTile(props) {
     }
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     id: "card-body-".concat(_dateMap_js__WEBPACK_IMPORTED_MODULE_2__["monthMap"][state.currentMonth], "-").concat(props.day, "-").concat(state.currentYear),
+    "data-date": "".concat(props.day, "-").concat(state.currentMonth, "-").concat(state.currentYear),
     className: "card-body"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
-    className: "card-title"
+    className: "card-title",
+    "data-date": "".concat(props.day, "-").concat(state.currentMonth, "-").concat(state.currentYear)
   }, "".concat(_dateMap_js__WEBPACK_IMPORTED_MODULE_2__["monthMap"][state.currentMonth], " ").concat(props.day, " ").concat(state.currentYear)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    "data-date": "".concat(props.day, "-").concat(state.currentMonth, "-").concat(state.currentYear),
     className: "all-events-container"
   }, props.eventsThisDay ? props.eventsThisDay.map(function (event) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_event_js__WEBPACK_IMPORTED_MODULE_4__["default"], {
       key: event.id,
-      className: "card-text"
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_event_js__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      "data-date": "".concat(props.day, "-").concat(state.currentMonth, "-").concat(state.currentYear),
       event: event
-    }));
+    });
   }) : "You don't have any events for this day"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    "data-date": "".concat(props.day, "-").concat(state.currentMonth, "-").concat(state.currentYear),
     className: "btn btn-primary",
     type: "button",
     onClick: function onClick() {
@@ -34927,21 +34934,153 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./store.js */ "./src/store.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
+var findNearstDomElementDate = function findNearstDomElementDate(coordinates, elementDimensions, elementDate) {
+  var nearestElements = []; //above
+  // nearestElements.push(
+  //   document.elementFromPoint(coordinates.left, coordinates.top + 5)
+  // );
+  // //below
+  // nearestElements.push(
+  //   document.elementFromPoint(
+  //     coordinates.left,
+  //     coordinates.top - (elementDimensions.width + 5)
+  //   )
+  // );
+  // //right
+  // nearestElements.push(
+  //   document.elementFromPoint(
+  //     coordinates.left + elementDimensions.width + 5,
+  //     coordinates.top
+  //   )
+  // );
+  // //left
+  // nearestElements.push(
+  //   document.elementFromPoint(coordinates.left + 5, coordinates.top)
+  // );
+  //above-left
+
+  nearestElements.push(document.elementFromPoint(coordinates.left - 1, coordinates.top - 1)); //above-right
+
+  nearestElements.push(document.elementFromPoint(coordinates.left + elementDimensions.width + 2, coordinates.top - 1)); //below-left
+  // nearestElements.push(
+  //   document.elementFromPoint(
+  //     coordinates.left - 5,
+  //     coordinates.top + (elementDimensions.height + 2)
+  //   )
+  // );
+  // //below-right
+  // nearestElements.push(
+  //   document.elementFromPoint(
+  //     coordinates.left + elementDimensions.width + 5,
+  //     coordinates.top + (elementDimensions.height + 2)
+  //   )
+  // );
+
+  for (var i = 0; i < nearestElements.length; i++) {
+    if (!nearestElements[i]) continue;
+
+    if (nearestElements[i].dataset.date !== elementDate) {
+      return nearestElements[i].dataset.date;
+    }
+  }
+};
 
 var Event = function Event(props) {
+  window.movingElement = false;
+  window.currentElement = null;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    id: "event-".concat(props.event.id)
+    "data-date": "".concat(props.event.day, "-").concat(props.event.month, "-").concat(props.event.year),
+    className: "event-container",
+    id: "event-".concat(props.event.id),
+    onMouseDown: function onMouseDown(e) {
+      console.log(e.clientX - document.body.getBoundingClientRect().left);
+      var element = document.getElementById("event-".concat(props.event.id));
+      element.style['z-index'] = '10';
+      window.movingElement = true;
+      window.currentElement = element;
+    },
+    onMouseUp: function onMouseUp() {
+      //THIS NEEDS TO BE ON GLOBAL
+      window.movingElement = false;
+      var eventId = window.currentElement.id.replace(/event-/, '');
+      var elementPosition = window.currentElement.getBoundingClientRect();
+      var nearestDomElementDate = findNearstDomElementDate({
+        left: elementPosition.left,
+        top: elementPosition.top
+      }, {
+        width: elementPosition.width,
+        height: elementPosition.height
+      }, window.currentElement.dataset.date);
+
+      if (nearestDomElementDate) {
+        var _nearestDomElementDat = nearestDomElementDate.split('-'),
+            _nearestDomElementDat2 = _slicedToArray(_nearestDomElementDat, 3),
+            day = _nearestDomElementDat2[0],
+            month = _nearestDomElementDat2[1],
+            year = _nearestDomElementDat2[2];
+
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.put("/update-event/".concat(eventId), {
+          day: day,
+          month: month,
+          year: year
+        }).then(function () {
+          axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/events').then(function (res) {
+            return res.data;
+          }).then(function (events) {
+            _store_js__WEBPACK_IMPORTED_MODULE_1__["default"].dispatch({
+              type: 'fetchEvents',
+              data: {
+                events: events
+              }
+            });
+          })["catch"](function (err) {
+            console.log('ERROR FETCHING EVENTS ', err);
+          });
+        })["catch"](function (error) {
+          console.log('ERROR UPDATING EVENT ', error);
+        });
+      }
+    },
+    onMouseMove: function onMouseMove(e) {
+      if (!window.movingElement) return;
+      window.currentElement.style.position = 'absolute'; //HOW DO YOU PREVENT THE ELEMENT FROM MOVING WHEN YOU MAKE IT ABSOLUTE??
+      // const startCoordinates = window.currentElement.getBoundingClientRect();
+      // const elementPosition = window.currentElement.getBoundingClientRect();
+      // const startCoordintates = {
+      //   left: elementPosition.left,
+      //   top: elementPosition.top
+      // };
+      // window.currentElement.style.transform = `translate3d(0px, 0px, 0px)`;
+      // window.currentElement.style.transform = `translate3d(${e.clienX}px,${e.clientY}px,0px)`;
+
+      var elemWidth = window.currentElement.style.width.replace(/px/, '');
+      var elemHeight = window.currentElement.style.height.replace(/px/, '');
+      var currentX = Number(window.currentElement.style.left.replace(/px/, ''));
+      var currentY = Number(window.currentElement.style.top.replace(/px/, ''));
+      window.currentElement.style.left = "".concat(currentX + e.movementX - elemWidth / 2, "px");
+      window.currentElement.style.top = "".concat(currentY + e.movementY - elemHeight, "px");
+    }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "event-card"
+    className: "event-card",
+    "data-date": "".concat(props.event.day, "-").concat(props.event.month, "-").concat(props.event.year)
   }, props.event.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     type: "button",
     className: "btn btn-outline-danger btn-sm",
+    "data-date": "".concat(props.event.day, "-").concat(props.event.month, "-").concat(props.event.year),
     onClick: function onClick() {
       axios__WEBPACK_IMPORTED_MODULE_2___default.a["delete"]("/".concat(props.event.id)).then(function (response) {
-        console.log('delete response ', response);
         _store_js__WEBPACK_IMPORTED_MODULE_1__["default"].dispatch({
           type: 'deleteEvent',
           data: {

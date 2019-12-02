@@ -35,7 +35,11 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div
+        onMouseUp={() => {
+          window.movingElement = false;
+        }}
+      >
         <MonthSwitcher />
         <Calendar />
       </div>

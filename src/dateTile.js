@@ -6,13 +6,17 @@ import Event from './event.js';
 
 const DateTile = props => {
   const state = store.getState();
-  console.log('date tile rendering with props ', props);
   return (
-    <div className="card date-card" style={{ width: '15rem' }}>
+    <div
+      className="card date-card"
+      data-date={`${props.day}-${state.currentMonth}-${state.currentYear}`}
+    >
       <EventCreation
+        className="event-creation-form"
         id={`form-${monthMap[state.currentMonth]}-${props.day}-${
           state.currentYear
         }`}
+        data-date={`${props.day}-${state.currentMonth}-${state.currentYear}`}
         date={{
           day: props.day,
           month: state.currentMonth,
@@ -23,21 +27,31 @@ const DateTile = props => {
         id={`card-body-${monthMap[state.currentMonth]}-${props.day}-${
           state.currentYear
         }`}
+        data-date={`${props.day}-${state.currentMonth}-${state.currentYear}`}
         className="card-body"
       >
-        <h5 className="card-title">
+        <h5
+          className="card-title"
+          data-date={`${props.day}-${state.currentMonth}-${state.currentYear}`}
+        >
           {`${monthMap[state.currentMonth]} ${props.day} ${state.currentYear}`}
         </h5>
-        <div className="all-events-container">
+        <div
+          data-date={`${props.day}-${state.currentMonth}-${state.currentYear}`}
+          className="all-events-container"
+        >
           {props.eventsThisDay
             ? props.eventsThisDay.map(event => (
-                <p key={event.id} className="card-text">
-                  <Event event={event} />
-                </p>
+                <Event
+                  key={event.id}
+                  data-date={`${props.day}-${state.currentMonth}-${state.currentYear}`}
+                  event={event}
+                />
               ))
             : `You don't have any events for this day`}
         </div>
         <button
+          data-date={`${props.day}-${state.currentMonth}-${state.currentYear}`}
           className="btn btn-primary"
           type="button"
           onClick={() => {
